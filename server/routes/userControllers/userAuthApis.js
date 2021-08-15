@@ -10,9 +10,13 @@ const app = express();
 module.exports = function (app) {
   //post request for registration
   app.post("/api/register", async (req, res) => {
-    const { email, password: plainTextPassword } = req.body;
+    const { userName, email, password: plainTextPassword } = req.body;
     if (!email || typeof email !== "string") {
       return res.json({ status: "error", error: "Invalid email" });
+    }
+
+    if (!userName || typeof userName !== "string") {
+      return res.json({ status: "error", error: "Invalid username" });
     }
 
     if (!plainTextPassword || typeof plainTextPassword !== "string") {
@@ -27,15 +31,16 @@ module.exports = function (app) {
 
     try {
       const resp = await User.create({
+        userName,
         email,
         password,
       });
       console.log("User created success !!", resp);
-    } catch (err) {
-      if (err.code === 11000) {
+    } catch (error) {
+      if (error.code === 11000) {
         // duplicate key error
         res.status(400);
-        return res.json({ status: 400, err: "Email already in use" });
+        return res.json({ status: 400, error: "Email already in use" });
       }
       throw err;
     }
@@ -60,20 +65,21 @@ module.exports = function (app) {
     if (!isMatch) {
       return res.json({ status: "error", error: "Invalid password" });
     }
-    const token = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET);
-    res.json({ status: "ok", data: token });
+    const userName = user.userName;
+    const authToken = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET);
+    res.json({ status: "ok", data: authToken, userName: userName });
   });
 
   // change password post request
   app.post("/api/change-password", async (req, res) => {
     try {
-      const { token, newPassword } = req.body;
-      if (!token || typeof token !== "string") {
-        return res.json({ status: "error", error: "Invalid token" });
+      const { authToken, newPassword } = req.body;
+      if (!authToken || typeof authToken !== "string") {
+        return res.json({ status: "error", error: "Invalid authToken" });
       }
-      const decoded = jwt.verify(token, JWT_SECRET);
+      const decoded = jwt.verify(authToken, JWT_SECRET);
       if (!decoded) {
-        return res.json({ status: "error", error: "Invalid token" });
+        return res.json({ status: "error", error: "Invalid authToken" });
       }
       const user = await User.findById(decoded.id);
       if (!user) {
@@ -89,7 +95,7 @@ module.exports = function (app) {
       await User.updateOne({ _id: decoded.id }, { password: hashedPassword });
       res.json({ status: "ok" });
     } catch (err) {
-      res.json({ status: "error", error: "Invalid token" });
+      res.json({ status: "error", error: "Invalid authToken" });
     }
   });
 };

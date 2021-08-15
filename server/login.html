@@ -35,9 +35,9 @@
                 })
             }).then(response => response.json());
             if (response.status === "ok") {
-                alert('logged in successfully');
+                alert('logged in successfully'+ response.userName);
                 console.log('Got the token: ',response.data)
-                localStorage.setItem('token', response.data);
+                localStorage.setItem('authToken', response.data);
             }
             else {
                 alert('Error: ' + response.error);

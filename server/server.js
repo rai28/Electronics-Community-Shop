@@ -1,11 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
-// const bcrypt = require("bcryptjs");
-// const jwt = require("jsonwebtoken");
 // DB Config
 const db = require("./config/keys").mongoURI;
-// const JWT_SECRET = require("./config/keys").jwtSecret;
-const User = require("./models/user");
 const userAuthApis = require("./routes/userControllers/userAuthApis");
 mongoose
   .connect(db, {
@@ -28,6 +24,7 @@ app.use(
     extended: true,
   })
 );
+
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
