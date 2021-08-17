@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 // DB Config
+const data = require("./data.js");
 const db = require("./config/keys").mongoURI;
 const userAuthApis = require("./routes/userControllers/userAuthApis");
 mongoose
@@ -35,6 +36,10 @@ app.get("/login", (req, res) => {
 
 app.get("/change-password", (req, res) => {
   res.sendFile(__dirname + "/changePassword.html");
+});
+
+app.get("/api/products", (req, res) => {
+  res.send(data.products);
 });
 
 userAuthApis(app);
