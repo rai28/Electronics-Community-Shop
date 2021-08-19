@@ -14,7 +14,8 @@ const data = {
       subcategoryId: 1,
       rating: 4,
       numReviews: 12,
-      countInStock: 0,
+      countInStock: 10,
+      maxQty: 10,
     },
     {
       _id: "2",
@@ -31,6 +32,7 @@ const data = {
       rating: 4,
       numReviews: 10,
       countInStock: 10,
+      maxQty: 5,
     },
     {
       _id: "3",
@@ -47,6 +49,7 @@ const data = {
       rating: 1.5,
       numReviews: 10,
       countInStock: 11,
+      maxQty: 10,
     },
     {
       _id: "4",
@@ -63,6 +66,7 @@ const data = {
       rating: 4,
       numReviews: 10,
       countInStock: 10,
+      maxQty: 10,
     },
     {
       _id: "5",
@@ -78,7 +82,8 @@ const data = {
       subcategoryId: 1,
       rating: 2.5,
       numReviews: 10,
-      countInStock: 1,
+      countInStock: 10,
+      maxQty: 10,
     },
   ],
 };

@@ -74,22 +74,31 @@ li {
   margin-top: 1rem;
 }
 
+input,
+select,
+textarea,
 button {
   padding: 1rem;
   border-radius: 0.5rem;
   border: 0.1rem solid #a4a4a4;
   font-size: 1.6rem;
-  background-color: #f8f8f8;
   font-family: "Open Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+button {
   cursor: pointer;
+  background-color: #f8f8f8;
 }
 
 button.primary {
   background-color: #f0c040;
 }
 
+input:hover,
+select:hover,
+textarea:hover,
 button:hover {
   border: 0.1rem solid #404040;
 }
@@ -101,6 +110,17 @@ button.block {
 header a {
   color: #ffffff;
   padding: 1rem;
+}
+
+.badge {
+  /* create style for cart badge  */
+  font-size: 1rem;
+  padding: 0.1rem 0.1rem 0.1rem 0.1rem;
+  background-color: #ff8000;
+  color: #ffffff;
+  border-radius: 0.7rem;
+  border: 0.1rem solid #a4a4a4;
+  margin-left: 0.5rem;
 }
 
 a.brand-logo {
@@ -132,14 +152,29 @@ a.brand-logo {
   flex: 2 1 50rem;
 }
 
+.min-30 {
+  min-width: 30rem;
+}
+
 img {
   border-radius: 0.5rem;
+}
+
+img.small {
+  max-width: 5rem;
+  width: 100%;
 }
 
 img.medium {
   max-width: 29rem;
 }
 img.large {
+  max-width: 40rem;
+  margin-top: 2rem;
+  /* create a border for product image  */
+  border: 0.1rem solid #a4a4a4;
+  /* create a shadow for product image  */
+  box-shadow: 0.1rem 0.1rem 0.1rem rgba(0, 0, 0, 0.2);
   width: 100%;
 }
 .card {
@@ -197,4 +232,17 @@ img.large {
   text-align: center;
   /* align in center */
   padding: 1rem;
+}
+
+.fa-user,
+.fa-shopping-cart {
+  /* set size of cart icon  */
+  font-size: 1.9rem;
+}
+
+.center-all {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }

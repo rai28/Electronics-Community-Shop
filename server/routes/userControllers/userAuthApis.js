@@ -42,7 +42,7 @@ module.exports = function (app) {
         res.status(400);
         return res.json({ status: 400, error: "Email already in use" });
       }
-      throw err;
+      throw error;
     }
 
     res.json({ status: "ok" });
