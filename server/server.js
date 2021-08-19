@@ -20,6 +20,7 @@ mongoose
   });
 
 const app = express();
+
 app.use(express.json());
 app.use(
   express.urlencoded({
@@ -46,4 +47,11 @@ userAuthApis(app);
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`Listening on  http://localhost:${PORT}`);
+});
+
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
+  res.json({
+    message: err.message,
+  });
 });
