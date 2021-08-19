@@ -1,7 +1,7 @@
 const express = require("express");
 const expressAsyncHandler = require("express-async-handler");
 const productModel = require("../models/productModel");
-const data = require("../data.js");
+// const data = require("../data.js");
 
 const productRouter = express.Router();
 

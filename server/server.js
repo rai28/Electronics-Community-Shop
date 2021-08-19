@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 // DB Config
-const data = require("./data.js");
+// const data = require("./data.js");
 const productRouter = require("./routes/productRouter.js");
 const db = require("./config/keys").mongoURI;
 const userAuthApis = require("./routes/userControllers/userAuthApis");

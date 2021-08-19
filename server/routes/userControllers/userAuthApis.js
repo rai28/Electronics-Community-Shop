@@ -66,7 +66,10 @@ module.exports = function (app) {
       return res.json({ status: "error", error: "Invalid password" });
     }
     const userName = user.userName;
-    const authToken = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET);
+    const authToken = jwt.sign(
+      { id: user._id, email: user.email, isAdmin: user.isAdmin },
+      JWT_SECRET
+    );
     res.json({ status: "ok", data: authToken, userName: userName });
   });
 
