@@ -246,3 +246,21 @@ img.large {
   top: 50%;
   transform: translate(-50%, -50%);
 }
+
+/* form */
+form {
+  padding: 1rem;
+  max-width: 40rem;
+  margin: 0 auto;
+}
+
+form > div {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem;
+}
+form label {
+  margin: 0.5rem 0.5rem 0.5rem 0;
+  font-weight: bold;
+  display: block;
+}
