@@ -23,7 +23,7 @@ export default function CartScreen(props) {
 
   const checkoutHandler = () => {
     // checkout
-    props.history.push("/checkout?redirect=shipping");
+    props.history.push("/signin?redirect=shipping");
   };
 
   return (

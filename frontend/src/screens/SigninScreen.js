@@ -1,11 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { signin } from "../actions/userActions";
-export default function SigninScreen() {
+export default function SigninScreen(props) {
   // set email and password to empty string
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const redirect = props.location.search
+    ? props.location.search.split("=")[1]
+    : "/";
+
+  const userSignIn = useSelector((state) => state.userSignIn);
+  const userInfo = userSignIn;
 
   const dispatch = useDispatch();
   // submit handler for signin form
@@ -14,7 +20,12 @@ export default function SigninScreen() {
     // dispatch signin action
     dispatch(signin(email, password));
   }
-
+  // if user is signed in, redirect to redirect variable
+  useEffect(() => {
+    if (userInfo.userInfo) {
+      props.history.push(redirect);
+    }
+  }, [props.history, redirect, userInfo]);
   return (
     <div>
       <form className="form-signin" onSubmit={submitHandler}>
