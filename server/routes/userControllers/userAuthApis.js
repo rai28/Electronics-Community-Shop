@@ -12,19 +12,25 @@ module.exports = function (app) {
   app.post("/api/register", async (req, res) => {
     const { userName, email, password: plainTextPassword } = req.body;
     if (!email || typeof email !== "string") {
-      return res.json({ status: "error", error: "Invalid email" });
+      return res.status(401).json({ status: "error", error: "Invalid email" });
     }
 
     if (!userName || typeof userName !== "string") {
-      return res.json({ status: "error", error: "Invalid username" });
+      return res
+        .status(401)
+        .json({ status: "error", error: "Invalid username" });
     }
 
     if (!plainTextPassword || typeof plainTextPassword !== "string") {
-      return res.json({ status: "error", error: "Invalid password" });
+      return res
+        .status(401)
+        .json({ status: "error", error: "Invalid password" });
     }
 
     if (plainTextPassword.length < 6) {
-      return res.json({ status: "error", error: "Password too short" });
+      return res
+        .status(401)
+        .json({ status: "error", error: "Password too short" });
     }
 
     const password = await bcrypt.hash(plainTextPassword, 10);
@@ -52,18 +58,23 @@ module.exports = function (app) {
   app.post("/api/login", async (req, res) => {
     const { email, password } = req.body;
     if (!email || typeof email !== "string") {
-      return res.json({ status: "error", error: "Invalid email" });
+      return res.status(401).json({ status: "error", error: "Invalid email" });
     }
     if (!password || typeof password !== "string") {
-      return res.json({ status: "error", error: "Invalid password" });
+      return res
+        .status(401)
+        .json({ status: "error", error: "Invalid password" });
     }
     const user = await User.findOne({ email });
     if (!user) {
-      return res.json({ status: "error", error: "User not found" });
+      return res.status(401).json({ status: "error", error: "User not found" });
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.json({ status: "error", error: "Invalid password" });
+      // send status code 401 for unauthorized
+      return res
+        .status(401)
+        .json({ status: "error", error: "Invalid password" });
     }
     const userName = user.userName;
     const authToken = jwt.sign(
@@ -78,21 +89,31 @@ module.exports = function (app) {
     try {
       const { authToken, newPassword } = req.body;
       if (!authToken || typeof authToken !== "string") {
-        return res.json({ status: "error", error: "Invalid authToken" });
+        return res
+          .status(401)
+          .json({ status: "error", error: "Invalid authToken" });
       }
       const decoded = jwt.verify(authToken, JWT_SECRET);
       if (!decoded) {
-        return res.json({ status: "error", error: "Invalid authToken" });
+        return res
+          .status(401)
+          .json({ status: "error", error: "Invalid authToken" });
       }
       const user = await User.findById(decoded.id);
       if (!user) {
-        return res.json({ status: "error", error: "User not found" });
+        return res
+          .status(401)
+          .json({ status: "error", error: "User not found" });
       }
       if (!newPassword || typeof newPassword !== "string") {
-        return res.json({ status: "error", error: "Invalid password" });
+        return res
+          .status(401)
+          .json({ status: "error", error: "Invalid password" });
       }
       if (newPassword.length < 6) {
-        return res.json({ status: "error", error: "Password too short" });
+        return res
+          .status(401)
+          .json({ status: "error", error: "Password too short" });
       }
       const hashedPassword = await bcrypt.hash(newPassword, 10);
       await User.updateOne({ _id: decoded.id }, { password: hashedPassword });
