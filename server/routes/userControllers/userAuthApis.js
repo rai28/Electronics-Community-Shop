@@ -12,69 +12,85 @@ module.exports = function (app) {
   app.post("/api/register", async (req, res) => {
     const { userName, email, password: plainTextPassword } = req.body;
     if (!email || typeof email !== "string") {
-      return res.status(401).json({ status: "error", error: "Invalid email" });
+      return res
+        .status(401)
+        .json({ status: "error", message: "Invalid email" });
     }
 
     if (!userName || typeof userName !== "string") {
       return res
         .status(401)
-        .json({ status: "error", error: "Invalid username" });
+        .json({ status: "error", message: "Invalid username" });
     }
 
     if (!plainTextPassword || typeof plainTextPassword !== "string") {
       return res
         .status(401)
-        .json({ status: "error", error: "Invalid password" });
+        .json({ status: "error", message: "Invalid password" });
     }
 
     if (plainTextPassword.length < 6) {
       return res
         .status(401)
-        .json({ status: "error", error: "Password too short" });
+        .json({ status: "error", message: "Password too short" });
     }
 
     const password = await bcrypt.hash(plainTextPassword, 10);
 
     try {
-      const resp = await User.create({
+      var createdUser = await User.create({
         userName,
         email,
         password,
       });
-      console.log("User created success !!", resp);
+      console.log("User created success !!", createdUser);
     } catch (error) {
       if (error.code === 11000) {
         // duplicate key error
         res.status(400);
-        return res.json({ status: 400, error: "Email already in use" });
+        return res.json({ status: 400, message: "Email already in use" });
       }
       throw error;
     }
 
-    res.json({ status: "ok" });
+    // res.json({ status: "ok" });
+
+    const authToken = jwt.sign(
+      {
+        id: createdUser._id,
+        email: createdUser.email,
+        isAdmin: createdUser.isAdmin,
+      },
+      JWT_SECRET
+    );
+    res.json({ status: "ok", data: authToken, userName: createdUser.userName });
   });
 
   // login post request
   app.post("/api/login", async (req, res) => {
     const { email, password } = req.body;
     if (!email || typeof email !== "string") {
-      return res.status(401).json({ status: "error", error: "Invalid email" });
+      return res
+        .status(401)
+        .json({ status: "error", message: "Invalid email" });
     }
     if (!password || typeof password !== "string") {
       return res
         .status(401)
-        .json({ status: "error", error: "Invalid password" });
+        .json({ status: "error", message: "Invalid password" });
     }
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(401).json({ status: "error", error: "User not found" });
+      return res
+        .status(401)
+        .json({ status: "error", message: "User not found" });
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       // send status code 401 for unauthorized
       return res
         .status(401)
-        .json({ status: "error", error: "Invalid password" });
+        .json({ status: "error", message: "Invalid password" });
     }
     const userName = user.userName;
     const authToken = jwt.sign(
@@ -91,35 +107,35 @@ module.exports = function (app) {
       if (!authToken || typeof authToken !== "string") {
         return res
           .status(401)
-          .json({ status: "error", error: "Invalid authToken" });
+          .json({ status: "error", message: "Invalid authToken" });
       }
       const decoded = jwt.verify(authToken, JWT_SECRET);
       if (!decoded) {
         return res
           .status(401)
-          .json({ status: "error", error: "Invalid authToken" });
+          .json({ status: "error", message: "Invalid authToken" });
       }
       const user = await User.findById(decoded.id);
       if (!user) {
         return res
           .status(401)
-          .json({ status: "error", error: "User not found" });
+          .json({ status: "error", message: "User not found" });
       }
       if (!newPassword || typeof newPassword !== "string") {
         return res
           .status(401)
-          .json({ status: "error", error: "Invalid password" });
+          .json({ status: "error", message: "Invalid password" });
       }
       if (newPassword.length < 6) {
         return res
           .status(401)
-          .json({ status: "error", error: "Password too short" });
+          .json({ status: "error", message: "Password too short" });
       }
       const hashedPassword = await bcrypt.hash(newPassword, 10);
       await User.updateOne({ _id: decoded.id }, { password: hashedPassword });
       res.json({ status: "ok" });
     } catch (err) {
-      res.json({ status: "error", error: "Invalid authToken" });
+      res.json({ status: "error", message: "Invalid authToken" });
     }
   });
 };
