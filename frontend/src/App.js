@@ -8,6 +8,7 @@ import SigninScreen from "./screens/SigninScreen";
 import { signout } from "./actions/userActions";
 import RegisterScreen from "./screens/RegisterScreen";
 import ShippingAddressScreen from "./screens/ShippingAddressScreen";
+import PaymentMethodScreen from "./screens/PaymentMethodScreen";
 
 function App() {
   const cart = useSelector((state) => state.cart);
@@ -67,6 +68,7 @@ function App() {
           <Route path="/signin" component={SigninScreen}></Route>
           <Route path="/register" component={RegisterScreen}></Route>
           <Route path="/shipping" component={ShippingAddressScreen}></Route>
+          <Route path="/checkout" component={PaymentMethodScreen}></Route>
           <Route path="/" component={HomeScreen} exact></Route>
         </main>
         <footer className="row center">Copyright &copy; ECS Shop</footer>
