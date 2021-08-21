@@ -9,6 +9,8 @@ import SigninScreen from "./screens/SigninScreen";
 function App() {
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
+  const userSignIn = useSelector((state) => state.userSignIn);
+  const { userInfo } = userSignIn;
 
   return (
     <BrowserRouter>
@@ -29,9 +31,13 @@ function App() {
                 <span className="badge badge-success">{cartItems.length}</span>
               )}
             </Link>
-            <Link to="/signin">
-              <i className="fa fa-user" />
-            </Link>
+            {userInfo ? (
+              <Link to="#"> {userInfo.userName}</Link>
+            ) : (
+              <Link to="/signin">
+                <i className="fa fa-user" />
+              </Link>
+            )}
           </div>
         </header>
         <main>

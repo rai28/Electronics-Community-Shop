@@ -1,4 +1,3 @@
-import { useDispatch } from "react-redux";
 import {
   USER_SIGNIN_FAILURE,
   USER_SIGNIN_REQUEST,
@@ -9,11 +8,8 @@ export const signin = (email, password) => async (dispatch) => {
   dispatch({ type: USER_SIGNIN_REQUEST, payload: { email, password } });
 
   try {
-    const { data } = axios.post("/api/login", { email, password });
-    dispatch({
-      type: USER_SIGNIN_SUCCESS,
-      payload: data,
-    });
+    const { data } = await axios.post("/api/login", { email, password });
+    dispatch({ type: USER_SIGNIN_SUCCESS, payload: data });
     localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
     dispatch({

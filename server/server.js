@@ -32,7 +32,7 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
-app.use("api/login", userAuthApis.login);
+app.use("api/login", userAuthApis);
 
 app.get("/change-password", (req, res) => {
   res.sendFile(__dirname + "/changePassword.html");

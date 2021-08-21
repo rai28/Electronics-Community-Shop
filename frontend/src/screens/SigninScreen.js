@@ -40,6 +40,7 @@ export default function SigninScreen() {
             type="password"
             id="password"
             placeholder="****"
+            autoComplete="on"
             required
             onChange={(e) => setPassword(e.target.value)}
           />
