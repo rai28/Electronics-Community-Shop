@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { savePaymentMethod } from "../actions/cartActions";
 export default function PaymentMethodScreen(props) {
   const cart = useSelector((state) => state.cart);
-  const { shippingAddresses } = cart;
-  if (shippingAddresses) {
+  const { shippingAddress } = cart;
+  if (!shippingAddress.address) {
     props.history.push("/shipping");
   }
   const [paymentMethod, setPaymentMethod] = useState("Paytm");
