@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 // DB Config
 // const data = require("./data.js");
 const productRouter = require("./routes/productRouter.js");
+const orderRouter = require("./routes/orderRouter.js");
 const db = require("./config/keys").mongoURI;
 const userAuthApis = require("./routes/userControllers/userAuthApis");
 mongoose
@@ -39,6 +40,7 @@ app.get("/change-password", (req, res) => {
 });
 
 app.use("/api/products", productRouter);
+app.use("/api/orders", orderRouter);
 
 userAuthApis(app);
 
