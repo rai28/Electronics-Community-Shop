@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 // DB Config
 const JWT_SECRET = require("../../config/keys").jwtSecret;
 const User = require("../../models/user");
+const generateToken = require("../../middlewares/jwtVerify");
 const app = express();
 
 //user authentication post routes apis
@@ -55,14 +56,7 @@ module.exports = function (app) {
 
     // res.json({ status: "ok" });
 
-    const authToken = jwt.sign(
-      {
-        id: createdUser._id,
-        email: createdUser.email,
-        isAdmin: createdUser.isAdmin,
-      },
-      JWT_SECRET
-    );
+    const authToken = generateToken(createdUser);
     res.json({ status: "ok", data: authToken, userName: createdUser.userName });
   });
 
@@ -93,11 +87,15 @@ module.exports = function (app) {
         .json({ status: "error", message: "Invalid password" });
     }
     const userName = user.userName;
-    const authToken = jwt.sign(
-      { id: user._id, email: user.email, isAdmin: user.isAdmin },
-      JWT_SECRET
-    );
-    res.json({ status: "ok", data: authToken, userName: userName });
+    const authToken = generateToken(user);
+    res.json({
+      status: "ok",
+      data: authToken,
+      userName: userName,
+      _id: user._id,
+      email: user.email,
+      isAdmin: user.isAdmin,
+    });
   });
 
   // change password post request
