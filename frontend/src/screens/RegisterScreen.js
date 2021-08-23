@@ -22,6 +22,7 @@ export default function RegisterScreen(props) {
   function submitHandler(e) {
     e.preventDefault();
     if (password !== confirmPassword) {
+      // password does not match
       alert("Passwords do not match");
     } else {
       // dispatch signin action
@@ -36,7 +37,7 @@ export default function RegisterScreen(props) {
   }, [props.history, redirect, userInfo]);
   return (
     <div>
-      <form className="form-signin" onSubmit={submitHandler}>
+      <form className="form-register" onSubmit={submitHandler}>
         <div>
           <h1>Register Here</h1>
         </div>

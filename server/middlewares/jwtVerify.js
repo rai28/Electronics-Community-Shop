@@ -3,7 +3,7 @@ const JWT_SECRET = require("../config/keys").jwtSecret;
 const generateToken = (user) => {
   return jwt.sign(
     {
-      id: user._id,
+      _id: user._id,
       email: user.email,
       name: user.name,
       isAdmin: user.isAdmin,

@@ -1,23 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import CheckOutNavigation from "../components/CheckOutNavigation";
+import { createOrder } from "../actions/orderActions";
+import { ORDER_CREATE_RESET } from "../constants/orderConstants";
+import LoadingBox from "../components/LoadingBox";
+import MessageBox from "../components/MessageBox";
 export default function PlaceOrderScreen(props) {
   const cart = useSelector((state) => state.cart);
   if (!cart.paymentMethod) {
     props.history.push("/checkout");
   }
+  const orderCreate = useSelector((state) => state.orderCreate);
+  const { loading, success, error, order } = orderCreate;
   const toPrice = (num) => Number(num.toFixed(2));
   cart.itemsPrice = toPrice(
     cart.cartItems.reduce((acm, com) => acm + com.qty * com.price, 0)
   );
   // shipping price --> to be implemented here we have fixed shipping price
   const shippingPrice = cart.itemsPrice > 500 ? 0 : 50;
+  cart.shippingPrice = shippingPrice;
   cart.totalPrice = toPrice(cart.itemsPrice + shippingPrice);
-
-  const PlaceOrderButton = () => {
-    // TO DO: add a button to place order
+  const dispatch = useDispatch();
+  const PlaceOrderHandler = () => {
+    dispatch(createOrder({ ...cart, orderItems: cart.cartItems }));
   };
+  useEffect(() => {
+    if (success) {
+      props.history.push(`/order/${order._id}`);
+      dispatch({ type: ORDER_CREATE_RESET });
+    }
+  }, [dispatch, props.history, order, success]);
   return (
     <div>
       <CheckOutNavigation step1 step2 step3 step4></CheckOutNavigation>
@@ -102,7 +115,7 @@ export default function PlaceOrderScreen(props) {
                 <li>
                   <button
                     type="button"
-                    onClick={PlaceOrderButton}
+                    onClick={PlaceOrderHandler}
                     className="primary block"
                     disabled={cart.cartItems.length === 0}
                   >
@@ -110,6 +123,8 @@ export default function PlaceOrderScreen(props) {
                   </button>
                 </li>
               </li>
+              {loading && <LoadingBox></LoadingBox>}
+              {error && <MessageBox variant="danger">{error}</MessageBox>}
             </ul>
           </div>
         </div>

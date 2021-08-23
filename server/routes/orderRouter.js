@@ -1,6 +1,7 @@
 const express = require("express");
 const expressAsyncHandler = require("express-async-handler");
 const isAuth = require("../middlewares/isAuth");
+const Order = require("../models/orderModel");
 const orderRouter = express.Router();
 
 orderRouter.post(

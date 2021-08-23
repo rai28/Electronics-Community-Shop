@@ -57,7 +57,14 @@ module.exports = function (app) {
     // res.json({ status: "ok" });
 
     const authToken = generateToken(createdUser);
-    res.json({ status: "ok", data: authToken, userName: createdUser.userName });
+    res.json({
+      status: "ok",
+      data: authToken,
+      userName: userName,
+      _id: createdUser._id,
+      email: createdUser.email,
+      isAdmin: createdUser.isAdmin,
+    });
   });
 
   // login post request
