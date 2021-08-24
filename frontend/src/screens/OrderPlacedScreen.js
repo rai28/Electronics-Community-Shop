@@ -24,7 +24,7 @@ export default function OrderPlacedScreen(props) {
       };
       document.body.appendChild(script);
     };
-    if (!order._id) {
+    if (!order) {
       dispatch(detailsOrder(orderId));
     } else {
       if (!order.isPaid) {
