@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const productRouter = require("./routes/productRouter.js");
 const orderRouter = require("./routes/orderRouter.js");
 const db = require("./config/keys").mongoURI;
+const paypalClientId = require("./config/keys").paypalClientId;
 const userAuthApis = require("./routes/userControllers/userAuthApis");
 mongoose
   .connect(db, {
@@ -41,7 +42,9 @@ app.get("/change-password", (req, res) => {
 
 app.use("/api/products", productRouter);
 app.use("/api/orders", orderRouter);
-
+app.get("/api/config/paypal", (req, res) => {
+  res.send(paypalClientId);
+});
 userAuthApis(app);
 
 const PORT = process.env.PORT || 4000;
