@@ -5,6 +5,9 @@ import {
   ORDER_DETAILS_REQUEST,
   ORDER_DETAILS_FAILURE,
   ORDER_DETAILS_SUCCESS,
+  ORDER_PAY_REQUEST,
+  ORDER_PAY_FAILURE,
+  ORDER_PAY_SUCCESS,
 } from "../constants/orderConstants";
 import axios from "axios";
 import { CLEAR_CART_ITEMS } from "../constants/cartConstants";
@@ -49,3 +52,27 @@ export const detailsOrder = (orderId) => async (dispatch, getState) => {
     dispatch({ type: ORDER_DETAILS_FAILURE, payload: message });
   }
 };
+
+export const payOrder =
+  (order, paymentResult) => async (dispatch, getState) => {
+    dispatch({ type: ORDER_PAY_REQUEST, payload: { order, paymentResult } });
+    const {
+      userSignIn: { userInfo },
+    } = getState();
+    try {
+      const { data } = axios.put(
+        `/api/orders/${order._id}/pay`,
+        paymentResult,
+        {
+          headers: { Authorization: `Bearer ${userInfo.data}` },
+        }
+      );
+      dispatch({ type: ORDER_PAY_SUCCESS, payload: data });
+    } catch (error) {
+      const message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      dispatch({ type: ORDER_PAY_FAILURE, payload: message });
+    }
+  };
