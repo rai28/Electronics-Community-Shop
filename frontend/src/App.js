@@ -11,6 +11,7 @@ import ShippingAddressScreen from "./screens/ShippingAddressScreen";
 import PaymentMethodScreen from "./screens/PaymentMethodScreen";
 import PlaceOrderScreen from "./screens/PlaceOrderScreen";
 import OrderPlacedScreen from "./screens/OrderPlacedScreen";
+import OrderHistoryScreen from "./screens/OrderHistoryScreen";
 
 function App() {
   const cart = useSelector((state) => state.cart);
@@ -53,6 +54,9 @@ function App() {
                     <Link to="/profile">Profile</Link>
                   </li>
                   <li>
+                    <Link to="/orders/history">Orders</Link>
+                  </li>
+                  <li>
                     <Link to="#signout" onClick={signoutHandler}>
                       Sign Out
                     </Link>
@@ -74,6 +78,7 @@ function App() {
           <Route path="/placeorder" component={PlaceOrderScreen}></Route>
           <Route path="/order/:id" component={OrderPlacedScreen}></Route>
           <Route path="/" component={HomeScreen} exact></Route>
+          <Route path="/orders/history" component={OrderHistoryScreen}></Route>
         </main>
         <footer className="row center">Copyright &copy; ECS Shop</footer>
       </div>

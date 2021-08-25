@@ -65,4 +65,13 @@ orderRouter.put(
   })
 );
 
+orderRouter.get(
+  "/mine/history",
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    const orders = await Order.find({ user: req.user._id });
+    res.send(orders);
+  })
+);
+
 module.exports = orderRouter;
