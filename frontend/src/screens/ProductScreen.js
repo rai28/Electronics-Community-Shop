@@ -19,7 +19,7 @@ export default function ProductScreen(props) {
     props.history.push(`/cart/${productId}?qty=${qty}`);
   };
   return (
-    <div className>
+    <div>
       {loading ? (
         <LoadingBox></LoadingBox>
       ) : error ? (

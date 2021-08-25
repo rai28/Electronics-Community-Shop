@@ -13,16 +13,18 @@ export const cartReducer = (state = { cartItems: [] }, action) => {
       if (existItem) {
         return {
           ...state,
+          error: "",
           cartItems: state.cartItems.map((x) =>
             x.product === existItem.product ? item : x
           ),
         };
       } else {
-        return { ...state, cartItems: [...state.cartItems, item] };
+        return { ...state, error: "", cartItems: [...state.cartItems, item] };
       }
     case CART_REMOVE_ITEM:
       return {
         ...state,
+        error: "",
         cartItems: state.cartItems.filter((x) => x.product !== action.payload),
       };
     case CART_SAVE_SHIPPING_ADDRESS:
@@ -30,7 +32,7 @@ export const cartReducer = (state = { cartItems: [] }, action) => {
     case CART_SAVE_PAYMENT_METHOD:
       return { ...state, paymentMethod: action.payload };
     case CLEAR_CART_ITEMS:
-      return { ...state, cartItems: [] };
+      return { ...state, error: "", cartItems: [] };
     default:
       return state;
   }

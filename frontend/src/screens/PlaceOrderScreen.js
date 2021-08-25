@@ -112,16 +112,16 @@ export default function PlaceOrderScreen(props) {
                   <div>order Total</div>
                   <div>Rs {cart.totalPrice.toFixed(2)}</div>
                 </div>
-                <li>
-                  <button
-                    type="button"
-                    onClick={PlaceOrderHandler}
-                    className="primary block"
-                    disabled={cart.cartItems.length === 0}
-                  >
-                    Place Order
-                  </button>
-                </li>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={PlaceOrderHandler}
+                  className="primary block"
+                  disabled={cart.cartItems.length === 0}
+                >
+                  Place Order
+                </button>
               </li>
               {loading && <LoadingBox></LoadingBox>}
               {error && <MessageBox variant="danger">{error}</MessageBox>}
