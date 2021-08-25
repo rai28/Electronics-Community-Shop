@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 // DB Config
 // const data = require("./data.js");
 const productRouter = require("./routes/productRouter.js");
+const userRouter = require("./routes/userControllers/userRetrive.js");
 const orderRouter = require("./routes/orderRouter.js");
 const db = require("./config/keys").mongoURI;
 const paypalClientId = require("./config/keys").paypalClientId;
@@ -42,6 +43,8 @@ app.get("/change-password", (req, res) => {
 
 app.use("/api/products", productRouter);
 app.use("/api/orders", orderRouter);
+app.use("/api/user", userRouter);
+
 app.get("/api/config/paypal", (req, res) => {
   res.send(paypalClientId);
 });
